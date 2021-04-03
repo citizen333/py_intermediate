@@ -126,9 +126,3 @@ def get_car_list(csv_filename):
                 if len(row[6]) > 0:
                     car_list.append(SpecMachine(row[1], row[3], row[5], row[6]))
     return car_list
-
-# %%
-len('')
-
-
-# %%
