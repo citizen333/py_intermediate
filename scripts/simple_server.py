@@ -12,12 +12,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         incoming_msg = ''
         while True:
             data = conn.recv(1024)
-            if data[-1] == 0:
-                incoming_msg += data.decode('utf8')[:-1]
+            if not data:
                 break
-            incoming_msg += data.decode('utf8')
-            
-        print('Received', incoming_msg)
-        outcoming_msg = incoming_msg.upper()
-        conn.sendall(outcoming_msg.encode('utf8'))
-        conn.send(b'\0')
+            incoming_msg = data.decode('utf8')
+            outcoming_msg = incoming_msg.upper()
+            conn.sendall(outcoming_msg.encode('utf8'))
