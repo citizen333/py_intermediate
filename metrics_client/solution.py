@@ -60,7 +60,9 @@ class Client:
         except:
             return False
         
-    def put(self, metric, value, timestamp = int(time.time())):
+    def put(self, metric, value, timestamp = None):
+        if timestamp is None:
+            timestamp = int(time.time())
         out_message = 'put ' + str(metric) + ' ' + str(value) + ' ' + str(int(timestamp)) + '\n'
         self._send_message(out_message)
         in_message = self._receive_message()
@@ -105,6 +107,8 @@ class Client:
                     else:
                         result.setdefault(metric_list[0], [])
                         result[metric_list[0]].append((int(metric_list[2]), float(metric_list[1])))
+                for key in result:
+                    result[key].sort(key = lambda tup: tup[0])
                 return result
         
         if in_message.startswith('error\n'):
