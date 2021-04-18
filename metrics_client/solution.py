@@ -38,13 +38,17 @@ class Client:
             raise ClientError("Send data error:", ex)
         
     def _receive_message(self):
-        try:
-            data = self._sock.recv(1024)
-            return data.decode('utf8')
-        except self._sock.timeout:
-            raise ClientError('Read timeout')
-        except self._sock.error as ex:
-            raise ClientError("Read data error:", ex)
+        data = b""
+        
+        while not data.endswith(b"\n\n"):
+            try:
+                data += self._sock.recv(1024)
+            except self._sock.timeout:
+                raise ClientError('Read timeout')
+            except self._sock.error as ex:
+                raise ClientError("Read data error:", ex)
+        
+        return data.decode('utf8')
         
     def _isint(self, value):
         try:
