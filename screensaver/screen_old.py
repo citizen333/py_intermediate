@@ -4,6 +4,7 @@
 import pygame
 import random
 import math
+from screensaver import screen
 
 SCREEN_DIM = (800, 600)
 
